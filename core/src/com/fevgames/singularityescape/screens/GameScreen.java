@@ -7,9 +7,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
+import com.fevgames.singularityescape.game.ActionWheel;
+import com.fevgames.singularityescape.game.GameState;
 import com.fevgames.singularityescape.map.MapTile;
 
 /**
@@ -23,6 +27,9 @@ public class GameScreen implements Screen, InputProcessor {
 
     TiledMapRenderer tiledMapRenderer;
     TiledMap tiledMap;
+
+    ActionWheel actionWheel;
+    GameState gameState;
 
 
 
@@ -40,6 +47,12 @@ public class GameScreen implements Screen, InputProcessor {
         batch = new SpriteBatch();
         tiledMap = new TmxMapLoader().load("map/iso.tmx");
         tiledMapRenderer = new IsometricTiledMapRenderer(tiledMap);
+
+        gameState=new GameState();
+        gameState.init(0);
+        actionWheel=new ActionWheel();
+        actionWheel.setGameState(gameState);
+
         Gdx.input.setInputProcessor(this);
 
         Gdx.app.log("SE","GameScreen::GameScreen()");
@@ -62,6 +75,10 @@ public class GameScreen implements Screen, InputProcessor {
             camera.zoom+=0.2;
             //Gdx.app.log("SE","Pos("+camera.position.x+","+camera.position.y+")");
         }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.W))
+        {
+            actionWheel.visible=!actionWheel.visible;
+        }
 
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -75,7 +92,7 @@ public class GameScreen implements Screen, InputProcessor {
         tiledMapRenderer.render();
 
 
-
+        actionWheel.render();
 
         //batch.end();
 
@@ -88,8 +105,14 @@ public class GameScreen implements Screen, InputProcessor {
         float h = Gdx.graphics.getHeight();
         //camera = new OrthographicCamera(4,4*( h / w));
         camera = new OrthographicCamera(w,h);
-        camera.position.set(1508.0f,932.0f,0);
         camera.zoom=2;
+
+        TiledMapTileLayer layer0 = (TiledMapTileLayer) tiledMap.getLayers().get(0);
+        Vector3 center = new Vector3(layer0.getWidth() * layer0.getTileWidth() / 2, layer0.getHeight() * layer0.getTileHeight() / 2, 0);
+        camera.position.set(center);
+
+
+        actionWheel.resize(width,height);
     }
 
     @Override
