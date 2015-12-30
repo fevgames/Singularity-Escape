@@ -5,6 +5,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapLayers;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.PolylineMapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -12,6 +18,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.fevgames.singularityescape.game.ActionMenu;
 import com.fevgames.singularityescape.game.ActionWheel;
 import com.fevgames.singularityescape.game.GameState;
 import com.fevgames.singularityescape.map.MapTile;
@@ -24,11 +31,13 @@ public class GameScreen implements Screen, InputProcessor {
     SpriteBatch batch;
     Game game;
     OrthographicCamera camera;
+    InputMultiplexer inputMultiplexer;
 
     TiledMapRenderer tiledMapRenderer;
     TiledMap tiledMap;
 
     ActionWheel actionWheel;
+    ActionMenu actionMenu;
     GameState gameState;
 
 
@@ -48,12 +57,21 @@ public class GameScreen implements Screen, InputProcessor {
         tiledMap = new TmxMapLoader().load("map/iso.tmx");
         tiledMapRenderer = new IsometricTiledMapRenderer(tiledMap);
 
+        inputMultiplexer=new InputMultiplexer();
+
         gameState=new GameState();
         gameState.init(0);
         actionWheel=new ActionWheel();
         actionWheel.setGameState(gameState);
+        actionMenu=new ActionMenu();
+        actionMenu.setGameState(gameState);
+        actionWheel.setActionMenu(actionMenu);
 
-        Gdx.input.setInputProcessor(this);
+        inputMultiplexer.addProcessor(actionMenu);
+        inputMultiplexer.addProcessor(actionWheel);
+        inputMultiplexer.addProcessor(this);
+
+        Gdx.input.setInputProcessor(inputMultiplexer);
 
         Gdx.app.log("SE","GameScreen::GameScreen()");
     }
@@ -80,7 +98,7 @@ public class GameScreen implements Screen, InputProcessor {
             actionWheel.visible=!actionWheel.visible;
         }
 
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -93,6 +111,7 @@ public class GameScreen implements Screen, InputProcessor {
 
 
         actionWheel.render();
+        actionMenu.render();
 
         //batch.end();
 
@@ -111,8 +130,12 @@ public class GameScreen implements Screen, InputProcessor {
         Vector3 center = new Vector3(layer0.getWidth() * layer0.getTileWidth() / 2, layer0.getHeight() * layer0.getTileHeight() / 2, 0);
         camera.position.set(center);
 
+        //Gdx.app.log("SE","Tile name:"+ layer0.getObjects().getCount());
+        //layer0.toString()
+
 
         actionWheel.resize(width,height);
+        actionMenu.resize(width,height);
     }
 
     @Override
@@ -167,6 +190,44 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+
+        Vector3 touchPoint=new Vector3(screenX,screenY,0);
+        camera.unproject(touchPoint);
+
+        for(int i=0;i<tiledMap.getLayers().getCount();i++)
+        {
+            MapLayer layer=tiledMap.getLayers().get(i);
+            MapObjects objects=layer.getObjects();
+            for(int k=0;k<objects.getCount();k++)
+            {
+                if(objects.get(k) instanceof PolylineMapObject)
+                {
+                    PolylineMapObject obj=(PolylineMapObject)objects.get(k);
+                    if(obj.getPolyline().contains(touchPoint.x,touchPoint.y))
+                    {
+                        Gdx.app.log("SE","CLICK!!");
+                        return true;
+                    }
+                }
+                if(objects.get(k) instanceof RectangleMapObject)
+                {
+                    RectangleMapObject obj=(RectangleMapObject)objects.get(k);
+                    //Gdx.app.log("SE"," 1 - "+obj.getRectangle().getX()+" - "+touchPoint.x);
+                    if(obj.getRectangle().contains(touchPoint.x,touchPoint.y))
+                    {
+                        Gdx.app.log("SE","CLICK!!");
+                        return true;
+                    }
+                }
+
+
+                //Gdx.app.log("SE",obj.getClass().toString());
+            }
+        }
+
+        if(actionWheel.visible==false)
+            actionWheel.visible=true;
+
         return false;
     }
 

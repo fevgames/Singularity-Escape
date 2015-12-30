@@ -1,15 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="isometric" renderorder="right-down" width="100" height="100" tilewidth="130" tileheight="64" nextobjectid="1">
+<map version="1.0" orientation="isometric" renderorder="right-down" width="100" height="100" tilewidth="130" tileheight="64" nextobjectid="6">
  <tileset firstgid="1" name="tiles" tilewidth="128" tileheight="95" spacing="1" margin="1" tilecount="4">
   <image source="tiles.png" width="260" height="192"/>
   <terraintypes>
    <terrain name="New Terrain" tile="-1"/>
   </terraintypes>
+  <tile id="1">
+   <properties>
+    <property name="OpenMap" value="test"/>
+   </properties>
+  </tile>
   <tile id="3" terrain="0,0,0,0"/>
+ </tileset>
+ <tileset firstgid="5" name="walls" tilewidth="130" tileheight="192" tilecount="3">
+  <image source="walls.png" width="390" height="192"/>
  </tileset>
  <layer name="Livello tile 1" width="100" height="100">
   <data encoding="base64" compression="zlib">
    eJzt1DEKACAMBMEg/v/NIqSyClgkxQzcCxYuAqjYz+h1G6ycHv30mMVfAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwJ8Dlf8AOQ==
+  </data>
+ </layer>
+ <objectgroup name="Object">
+  <object id="3" x="289.954" y="284.046">
+   <properties>
+    <property name="OpenMap" value="iso2.tmx"/>
+   </properties>
+   <polyline points="0,0 141.554,148.446 211,83 53.5385,-69.5385 -3,-3"/>
+  </object>
+  <object id="4" x="213.677" y="236.323" width="79.0308" height="82.9692"/>
+  <object id="5" x="226.031" y="293.969"/>
+ </objectgroup>
+ <layer name="Walls" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt0SEOACAMBMEa6P9/DBIcSUURM8n6Sy4CeDF2eUSv2T2Aiz/+4g8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACoWbROAC0=
   </data>
  </layer>
 </map>
