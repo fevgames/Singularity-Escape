@@ -33,4 +33,13 @@ public class GraphicUtils {
         return pixmap;
     }
 
+    public static Pixmap getPixmapRectangle(int width, int height, int color) {
+
+        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+        pixmap.setColor(color);
+
+        pixmap.fillRectangle(0, 0, pixmap.getWidth(), pixmap.getHeight());
+        return pixmap;
+    }
+
 }

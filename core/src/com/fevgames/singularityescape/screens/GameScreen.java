@@ -21,6 +21,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.fevgames.singularityescape.game.ActionMenu;
 import com.fevgames.singularityescape.game.ActionWheel;
 import com.fevgames.singularityescape.game.GameState;
+import com.fevgames.singularityescape.game.MainUI;
 import com.fevgames.singularityescape.map.MapTile;
 
 /**
@@ -38,6 +39,7 @@ public class GameScreen implements Screen, InputProcessor {
 
     ActionWheel actionWheel;
     ActionMenu actionMenu;
+    MainUI mainUI;
     GameState gameState;
 
 
@@ -66,7 +68,10 @@ public class GameScreen implements Screen, InputProcessor {
         actionMenu=new ActionMenu();
         actionMenu.setGameState(gameState);
         actionWheel.setActionMenu(actionMenu);
+        mainUI=new MainUI();
+        mainUI.setGameState(gameState);
 
+        inputMultiplexer.addProcessor(mainUI);
         inputMultiplexer.addProcessor(actionMenu);
         inputMultiplexer.addProcessor(actionWheel);
         inputMultiplexer.addProcessor(this);
@@ -98,6 +103,8 @@ public class GameScreen implements Screen, InputProcessor {
             actionWheel.visible=!actionWheel.visible;
         }
 
+        gameState.update();
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -112,6 +119,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         actionWheel.render();
         actionMenu.render();
+        mainUI.render();
 
         //batch.end();
 
@@ -136,6 +144,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         actionWheel.resize(width,height);
         actionMenu.resize(width,height);
+        mainUI.resize(width,height);
     }
 
     @Override
