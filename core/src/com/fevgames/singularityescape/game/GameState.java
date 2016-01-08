@@ -10,39 +10,53 @@ import com.fevgames.singularityescape.game.cards.EventsDeck;
  * Created by Roby on 28/12/2015.
  */
 public class GameState {
-    public int distance;
+    public float velocity,gravity;
+
+    public float distance;
+
+
     public float gameTime;
     public float gameTimeSinceLastCard;
-    public float gameTimeSinceLastMovement;
+    //public float gameTimeSinceLastMovement;
     public boolean paused;
     public float integrity;
 
     private EventsDeck eventsDeck;
     private ActionsDeck actionsDeck;
-    private ActiveDeck activeDeck;
+    public ActiveDeck activeDeck;
 
     public enum ShipSections {
-        NAVIGATION,LIVING,TACTICAL,CARGO,ENGINEERING
+        NAVIGATION,LIVING,TACTICAL,CARGO,ENGINEERING,
+        ALL
+    }
+
+    public enum ShipCharacters
+    {
+        Tex,Cindy,SL71b,
+        ALL
     }
 
     public void init(int difficulty)    //0-easy 1-normal 2-hard
     {
+        this.velocity=4;
+        this.gravity=5;
+
         if(difficulty==0)
         {
-            this.distance=7;
+            this.distance=420;
         }
         else if(difficulty==1)
         {
-            this.distance=5;
+            this.distance=300;
         }
         else if(difficulty==2)
         {
-            this.distance=3;
+            this.distance=180;
         }
 
         this.gameTime=0;
         this.gameTimeSinceLastCard=0;
-        this.gameTimeSinceLastMovement=0;
+        //this.gameTimeSinceLastMovement=0;
         this.paused=false;
         this.integrity=100;
 
@@ -55,6 +69,17 @@ public class GameState {
         activeDeck=new ActiveDeck();
         activeDeck.init();
         activeDeck.setGameState(this);
+
+
+        //Draw 3 cards
+        for(int i=0;i<3;i++)
+        {
+            BaseCard tmp=actionsDeck.getRandom();
+            if(tmp!=null)
+            {
+                activeDeck.addCard(tmp);
+            }
+        }
     }
 
     public static ShipSections[] getShipSections()
@@ -89,7 +114,7 @@ public class GameState {
         {
             this.gameTime+= Gdx.graphics.getDeltaTime();
             this.gameTimeSinceLastCard+= Gdx.graphics.getDeltaTime();
-            this.gameTimeSinceLastMovement+= Gdx.graphics.getDeltaTime();
+            //this.gameTimeSinceLastMovement+= Gdx.graphics.getDeltaTime();
 
             if(this.gameTimeSinceLastCard>=120)
             {
@@ -106,10 +131,25 @@ public class GameState {
                 {
                     activeDeck.addCard(tmp);
                 }
-
-
+                tmp=actionsDeck.getRandom();
+                if(tmp!=null)
+                {
+                    activeDeck.addCard(tmp);
+                }
             }
-            if(this.gameTimeSinceLastMovement>=60&&this.distance>2)
+
+            distance+=(this.velocity-this.gravity)*Gdx.graphics.getDeltaTime();
+
+            if(this.distance>=600)
+            {
+                //Win!
+            }
+            if(this.distance<=1)
+            {
+                //Fail!
+            }
+
+            /*if(this.gameTimeSinceLastMovement>=60&&this.distance>2)
             {
                 this.gameTimeSinceLastMovement=0;
                 this.distance-=1;
@@ -119,7 +159,7 @@ public class GameState {
                 this.gameTimeSinceLastMovement=0;
                 this.distance-=1;
                 //Game over!
-            }
+            }*/
         }
     }
 

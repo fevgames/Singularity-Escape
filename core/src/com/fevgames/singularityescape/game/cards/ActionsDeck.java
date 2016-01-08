@@ -15,16 +15,32 @@ public class ActionsDeck {
     public void init()
     {
         cards = new ArrayList<BaseCard>();
+
         cards.add(new BaseCard("Open Airlocks") {
             @Override
             public void run() {
-
+                gameState.velocity+=2;
             }
         });
+
         cards.add(new BaseCard("Toss Fuel Cell into Fusion Reactor") {
             @Override
             public void run() {
-                gameState.distance+=2;
+                gameState.distance+=100;
+            }
+        });
+
+        cards.add(new BaseCard("Overload Fusion Reactor") {
+            @Override
+            public void run() {
+                gameState.velocity+=2;
+            }
+        });
+
+        cards.add(new BaseCard("Destroy Surplus Weight") {
+            @Override
+            public void run() {
+                gameState.distance+=100;
             }
         });
     }

@@ -2,17 +2,19 @@ package com.fevgames.singularityescape.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.compression.lzma.Base;
 import com.fevgames.singularityescape.common.GraphicUtils;
+import com.fevgames.singularityescape.game.cards.BaseCard;
 import com.fevgames.singularityescape.screens.GameScreen;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Created by Roby on 28/12/2015.
@@ -71,6 +73,8 @@ public class ActionWheel implements InputProcessor {
         float realCenterX=0;
         float realCenterY=0;
 
+        ArrayList<BaseCard> tmp=gameState.activeDeck.getCards();
+
         for(int i=0;i<sections.length;i++)
         {
             layout.setText(font,GameState.getShipSectionName(sections[i]));
@@ -79,8 +83,19 @@ public class ActionWheel implements InputProcessor {
 
             if(textTextures[i]==null)
             {
-                textTextures[i]=new Texture(GraphicUtils.getPixmapRoundedRectangle((int)layout.width+40,(int)layout.height+24,14, 0xFF0000FF));
+                textTextures[i]=new Texture(GraphicUtils.getPixmapRoundedRectangle((int)layout.width+40,(int)layout.height+24,14, 0xFFFFFFFF));
             }
+
+            batch.setColor(Color.RED);
+            for(int k=0;k<tmp.size();k++)
+            {
+                if(tmp.get(k).shipSection==sections[i]||tmp.get(k).shipSection==GameState.ShipSections.ALL)
+                {
+                    batch.setColor(Color.BLUE);
+                    break;
+                }
+            }
+
             batch.draw(
                     textTextures[i],
                     realCenterX-(textTextures[i].getWidth()/2),
@@ -100,6 +115,7 @@ public class ActionWheel implements InputProcessor {
         {
             textTextures[6]=new Texture(GraphicUtils.getPixmapRoundedRectangle(70,70,35, 0xFF0000FF));
         }
+        batch.setColor(Color.WHITE);
         batch.draw(
                 textTextures[6],
                 centerx-(textTextures[6].getWidth()/2),

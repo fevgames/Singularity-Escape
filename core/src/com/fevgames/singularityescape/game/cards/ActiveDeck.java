@@ -27,4 +27,9 @@ public class ActiveDeck {
     {
         gameState=_g;
     }
+
+    public ArrayList<BaseCard> getCards()
+    {
+        return cards;
+    }
 }
