@@ -48,8 +48,9 @@ public class ActionMenu implements InputProcessor {
         textLines[3]=" - Entry #3";*/
 
         font.setColor(Color.BLACK);
+        font.getData().setScale(Gdx.graphics.getHeight()/480,Gdx.graphics.getHeight()/480);
 
-        this.selectedShipSection=GameState.ShipSections.LIVING;
+        this.selectedShipSection=GameState.ShipSections.NONE;
 
         //layout.setText(font,"Cancel");
     }
@@ -61,6 +62,14 @@ public class ActionMenu implements InputProcessor {
 
     public void render()
     {
+        //check if gameState.alertMessage != "", if so I show a message
+        if(gameState.alertMessage.length()>0)
+        {
+            renderAlert();
+            return;
+        }
+
+
         if(!visible)
             return;
 
@@ -112,6 +121,35 @@ public class ActionMenu implements InputProcessor {
         batch.end();
     }
 
+
+    private void renderAlert()
+    {
+        camera.update();
+
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw(
+                bgTexture,
+                0-(bgTexture.getWidth()/2),
+                0-(bgTexture.getHeight()/2)
+        );
+
+        float y=bgTexture.getHeight()/2-30;
+
+        tmpGL=font.draw(
+                batch,
+                gameState.alertMessage,
+                -bgTexture.getWidth()/2+30,
+                y,
+                (bgTexture.getWidth()-60),
+                -1,
+                true
+        );
+        y-=(tmpGL.height*1.8);
+
+        batch.end();
+    }
+
     public void update()
     {
 
@@ -149,6 +187,12 @@ public class ActionMenu implements InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
+        if(gameState.alertMessage.length()>0)
+        {
+            gameState.discardAlert();
+            return true;
+        }
+
         if(!visible)
         {
             return false;
@@ -185,11 +229,19 @@ public class ActionMenu implements InputProcessor {
                 if(v.x>x&&v.y>y-tmpGL.height&&v.x<x+tmpGL.width&&v.y<y)
                 {
                     //Click!
+
+                    GameState.ShipSections _section=activeCards.get(i).shipSection;
+                    if(_section!= GameState.ShipSections.ALL&&_section!=GameState.ShipSections.NONE)
+                    {
+                        gameState.currentShipSection=_section;
+                    }
+
                     Gdx.app.log("[SE]","Click!"+activeCards.get(i).description);
                     activeCards.get(i).run();
 
                     visible=false;
-                    activeCards.remove(i);
+                    if(!activeCards.get(i).persistent)
+                        activeCards.remove(i);
                     return true;
                 }
                 y-=(tmpGL.height*1.8);

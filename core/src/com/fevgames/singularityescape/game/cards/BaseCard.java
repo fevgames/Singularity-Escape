@@ -11,23 +11,31 @@ public abstract class BaseCard {
     public GameState.ShipSections shipSection;
     public GameState.ShipCharacters character;
 
+    public boolean persistent;
+
     public BaseCard(String _d)
     {
         this.shipSection=GameState.ShipSections.ALL;
         this.description=_d;
         this.character=GameState.ShipCharacters.ALL;
+
+        persistent=false;
     }
     public BaseCard(String _d,GameState.ShipSections _s)
     {
         this.shipSection=_s;
         this.description=_d;
         this.character=GameState.ShipCharacters.ALL;
+
+        persistent=false;
     }
     public BaseCard(String _d,GameState.ShipSections _s, GameState.ShipCharacters _c)
     {
         this.shipSection=_s;
         this.description=_d;
         this.character=_c;
+
+        persistent=false;
     }
 
     public abstract void run();

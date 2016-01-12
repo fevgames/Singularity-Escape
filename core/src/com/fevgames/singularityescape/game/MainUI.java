@@ -32,6 +32,8 @@ public class MainUI implements InputProcessor {
 
         font.setColor(Color.WHITE);
 
+        font.getData().setScale(Gdx.graphics.getHeight()/480,Gdx.graphics.getHeight()/480);
+
         //layout.setText(font,"Cancel");
     }
 

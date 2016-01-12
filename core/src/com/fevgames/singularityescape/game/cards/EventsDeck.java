@@ -19,18 +19,21 @@ public class EventsDeck {
             @Override
             public void run() {
                 gameState.integrity-=30;
+                gameState.showAlert("The following event occurred: "+this.description);
             }
         });
         cards.add(new BaseCard("An asteroid damages the ship. You lose 20% structural integrity") {
             @Override
             public void run() {
                 gameState.integrity-=20;
+                gameState.showAlert("The following event occurred: "+this.description);
             }
         });
         cards.add(new BaseCard("An asteroid damages the ship. You lose 10% structural integrity") {
             @Override
             public void run() {
                 gameState.integrity-=10;
+                gameState.showAlert("The following event occurred: "+this.description);
             }
         });
     }

@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.compression.lzma.Base;
 import com.fevgames.singularityescape.common.GraphicUtils;
 import com.fevgames.singularityescape.game.cards.BaseCard;
 import com.fevgames.singularityescape.screens.GameScreen;
+import com.badlogic.gdx.math.Rectangle;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class ActionWheel implements InputProcessor {
         visible=false;
         textTextures=new Texture[7];
         textColors=new int[7];
+
     }
 
     public void setGameState(GameState _g)
@@ -59,6 +61,8 @@ public class ActionWheel implements InputProcessor {
 
         if(!visible)
             return;
+
+        font.getData().setScale(Gdx.graphics.getHeight()/480,Gdx.graphics.getHeight()/480);
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -113,7 +117,7 @@ public class ActionWheel implements InputProcessor {
         layout.setText(font,"Cancel");
         if(textTextures[6]==null)
         {
-            textTextures[6]=new Texture(GraphicUtils.getPixmapRoundedRectangle(70,70,35, 0xFF0000FF));
+            textTextures[6]=new Texture(GraphicUtils.getPixmapRoundedRectangle(70*(Gdx.graphics.getHeight()/480),70*(Gdx.graphics.getHeight()/480),35, 0xFF0000FF));
         }
         batch.setColor(Color.WHITE);
         batch.draw(

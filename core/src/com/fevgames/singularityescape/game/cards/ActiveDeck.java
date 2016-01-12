@@ -14,7 +14,98 @@ public class ActiveDeck {
 
     public void init()
     {
+
         cards = new ArrayList<BaseCard>();
+
+        //Debug cards
+
+        BaseCard tmpCard=new BaseCard("Go to: NAVIGATION", GameState.ShipSections.NAVIGATION) {
+            @Override
+            public void run() {
+
+            }
+        };
+        tmpCard.persistent=true;
+        cards.add(tmpCard);
+
+        tmpCard=new BaseCard("Go to: LIVING", GameState.ShipSections.LIVING) {
+            @Override
+            public void run() {
+
+            }
+        };
+        tmpCard.persistent=true;
+        cards.add(tmpCard);
+
+        tmpCard=new BaseCard("Go to: TACTICAL", GameState.ShipSections.TACTICAL) {
+            @Override
+            public void run() {
+
+            }
+        };
+        tmpCard.persistent=true;
+        cards.add(tmpCard);
+
+        tmpCard=new BaseCard("Go to: CARGO", GameState.ShipSections.CARGO) {
+            @Override
+            public void run() {
+
+            }
+        };
+        tmpCard.persistent=true;
+        cards.add(tmpCard);
+
+        tmpCard=new BaseCard("Go to: ENGINEERING", GameState.ShipSections.ENGINEERING) {
+            @Override
+            public void run() {
+
+            }
+        };
+        tmpCard.persistent=true;
+        cards.add(tmpCard);
+
+        tmpCard=new BaseCard("[DEBUG] Set velocity to -3") {
+            @Override
+            public void run() {
+                gameState.velocity=-3;
+            }
+        };
+        tmpCard.persistent=true;
+        cards.add(tmpCard);
+        tmpCard=new BaseCard("[DEBUG] Set velocity to 4") {
+            @Override
+            public void run() {
+                gameState.velocity=4;
+            }
+        };
+        tmpCard.persistent=true;
+        cards.add(tmpCard);
+        tmpCard=new BaseCard("[DEBUG] Set velocity to 5") {
+            @Override
+            public void run() {
+                gameState.velocity=5;
+            }
+        };
+        tmpCard.persistent=true;
+        cards.add(tmpCard);
+        tmpCard=new BaseCard("[DEBUG] Set velocity to 6") {
+            @Override
+            public void run() {
+                gameState.velocity=6;
+            }
+        };
+        tmpCard.persistent=true;
+        cards.add(tmpCard);
+        tmpCard=new BaseCard("[DEBUG] Set velocity to 20") {
+            @Override
+            public void run() {
+                gameState.velocity=20;
+            }
+        };
+        tmpCard.persistent=true;
+        cards.add(tmpCard);
+
+
     }
 
     public void addCard(BaseCard c)

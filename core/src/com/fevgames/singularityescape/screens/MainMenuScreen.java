@@ -273,7 +273,9 @@ public class MainMenuScreen implements Screen,InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
+
+        game.setScreen(new GameScreen(game));
+        return true;
     }
 
     @Override

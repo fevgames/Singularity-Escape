@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.fevgames.singularityescape.common.GraphicUtils;
 import com.fevgames.singularityescape.screens.GameScreen;
 import com.fevgames.singularityescape.screens.MainMenuScreen;
 
@@ -20,6 +21,8 @@ public class SingEscape extends Game {
 	public void create () {
 		//batch = new SpriteBatch();
 		//img = new Texture("badlogic.jpg");
+
+		GraphicUtils.init();
 
 		mainMenuScreen=new MainMenuScreen(this);
 		setScreen(mainMenuScreen);
