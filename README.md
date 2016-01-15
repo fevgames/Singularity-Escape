@@ -8,35 +8,34 @@ Jam page: http://itch.io/jam/libgdxjam
 
 The FevGames team
 
-Fev
-Game Designer
+Fev  
+Game Designer  
 [fevgames.net](http://fevgames.net)
 
-Roby65
-Lead Developer
+Roby65  
+Lead Developer  
 twitter.com/RDomenella
 
-Robert Vaughan
-Graphic Artist
+Robert Vaughan  
+Graphic Artist  
 RobertVaughan.info
 
-Chris Gheen
-Consultant Developer
+Chris Gheen  
+Consultant Developer  
 gamedevhobby.com
 
-Music/Sound
-Day 59 - Mark Sparling
+Music/Sound  
+Day 59 - Mark Sparling  
 marksparling.com
 
-Spacetime - Alexander Ehlers
+Spacetime - Alexander Ehlers  
 opengameart.org
 
-Tiny Select
+Tiny Select  
 noiseforfun.com
 
-Move Cursor 02
+Move Cursor 02  
 noiseforfun.com
 
-Alert 02
+Alert 02  
 noiseforfun.com
-
