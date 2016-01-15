@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.fevgames.singularityescape.common.GraphicUtils;
+import com.fevgames.singularityescape.common.SoundUtils;
 import com.fevgames.singularityescape.game.cards.ActiveDeck;
 import com.fevgames.singularityescape.game.cards.BaseCard;
 
@@ -134,7 +135,7 @@ public class ActionMenu implements InputProcessor {
                 0-(bgTexture.getHeight()/2)
         );
 
-        float y=bgTexture.getHeight()/2-30;
+        float y=bgTexture.getHeight()/2-50;
 
         tmpGL=font.draw(
                 batch,
@@ -238,6 +239,8 @@ public class ActionMenu implements InputProcessor {
 
                     Gdx.app.log("[SE]","Click!"+activeCards.get(i).description);
                     activeCards.get(i).run();
+
+                    SoundUtils.click.play();
 
                     visible=false;
                     if(!activeCards.get(i).persistent)

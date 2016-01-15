@@ -2,6 +2,7 @@ package com.fevgames.singularityescape.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.fevgames.singularityescape.common.SoundUtils;
 import com.fevgames.singularityescape.game.cards.ActionsDeck;
 import com.fevgames.singularityescape.game.cards.ActiveDeck;
 import com.fevgames.singularityescape.game.cards.BaseCard;
@@ -42,6 +43,10 @@ public class GameState {
     public float velocity,gravity;
     public float distance;
     public ShipSections currentShipSection;
+    public float oxygenRegenerationRatio;
+
+    public boolean leakingAir;
+    public boolean poisonGas;
 
     public String alertMessage;
 
@@ -50,6 +55,10 @@ public class GameState {
     //public float gameTimeSinceLastMovement;
     public boolean paused;
     public float integrity;
+    public int cratesNumber;
+    public boolean disableActionWheel;
+
+    private int discardedAlerts;
 
     private EventsDeck eventsDeck;
     private ActionsDeck actionsDeck;
@@ -66,6 +75,11 @@ public class GameState {
         this.velocity=4;
         this.gravity=5;
         this.currentShipSection=ShipSections.NAVIGATION;
+        this.cratesNumber=6;
+        this.oxygenRegenerationRatio=1;
+        this.leakingAir=false;
+        this.poisonGas=false;
+        this.disableActionWheel=false;
 
         this.texStatus=new CharacterStatus();
         this.texStatus.shipSection=ShipSections.NAVIGATION;
@@ -74,7 +88,7 @@ public class GameState {
         this.sL71bStatus=new CharacterStatus();
         this.sL71bStatus.shipSection=ShipSections.ENGINEERING;
 
-        this.alertMessage="";
+
 
         if(difficulty==0)
         {
@@ -115,6 +129,10 @@ public class GameState {
                 activeDeck.addCard(tmp);
             }
         }
+
+        this.alertMessage=("FTL jump completed! Cool down protocols engaged.");
+        this.paused=true;
+        this.discardedAlerts=0;
     }
 
     public static ShipSections[] getShipSections()
@@ -149,6 +167,39 @@ public class GameState {
         {
             this.gameTime+= Gdx.graphics.getDeltaTime();
             this.gameTimeSinceLastCard+= Gdx.graphics.getDeltaTime();
+
+            if(this.leakingAir)
+            {
+                this.texStatus.oxygen-=(2*Gdx.graphics.getDeltaTime());
+                if(this.texStatus.oxygen<=0)
+                    this.texStatus.health=0;
+                this.sL71bStatus.oxygen-=(2*Gdx.graphics.getDeltaTime());
+                if(this.sL71bStatus.oxygen<=0)
+                    this.sL71bStatus.health=0;
+                this.cindyStatus.oxygen-=(2*Gdx.graphics.getDeltaTime());
+                if(this.cindyStatus.oxygen<=0)
+                    this.cindyStatus.health=0;
+            }
+            else
+            {
+                this.texStatus.oxygen+=(this.oxygenRegenerationRatio*Gdx.graphics.getDeltaTime());
+                if(this.texStatus.oxygen>100)
+                    this.texStatus.oxygen=100;
+                this.sL71bStatus.oxygen+=(this.oxygenRegenerationRatio*Gdx.graphics.getDeltaTime());
+                if(this.sL71bStatus.oxygen>100)
+                    this.sL71bStatus.oxygen=100;
+                this.cindyStatus.oxygen+=(this.oxygenRegenerationRatio*Gdx.graphics.getDeltaTime());
+                if(this.cindyStatus.oxygen>100)
+                    this.cindyStatus.oxygen=100;
+            }
+
+            if(this.poisonGas)
+            {
+                this.texStatus.health-=(2*Gdx.graphics.getDeltaTime());
+                this.sL71bStatus.health-=(2*Gdx.graphics.getDeltaTime());
+                this.cindyStatus.health-=(2*Gdx.graphics.getDeltaTime());
+            }
+
             //this.gameTimeSinceLastMovement+= Gdx.graphics.getDeltaTime();
 
             if(this.gameTimeSinceLastCard>=120)
@@ -173,7 +224,9 @@ public class GameState {
                 }
             }
 
-            distance+=(this.velocity-this.gravity)*Gdx.graphics.getDeltaTime();
+            distance+=(
+                    (this.velocity+(sL71bStatus.shipSection==GameState.ShipSections.ENGINEERING&&sL71bStatus.health>0&&sL71bStatus.oxygen>0?0.25:0))
+                            -this.gravity)*Gdx.graphics.getDeltaTime();
 
             if(this.distance>=600)
             {
@@ -204,14 +257,28 @@ public class GameState {
 
     public void showAlert(String _s)
     {
-        this.alertMessage=_s;
+        this.alertMessage=_s + " Tap to continue.";
         paused=true;
+
+        SoundUtils.alert.play();
     }
 
     public void discardAlert()
     {
-        this.alertMessage="";
-        paused=false;
+        this.discardedAlerts++;
+        if(this.discardedAlerts==1)
+        {
+            this.alertMessage = "Singularity detected.\r\nCollision with event horizon in "+((int)(this.distance/60))+" minutes and "+((int)(this.distance-(((int)(this.distance/60))*60)))+" seconds.";
+        }
+        else if(this.discardedAlerts==2)
+        {
+            this.alertMessage = "Try to survive. Good luck.";
+        }
+        else {
+            this.alertMessage = "";
+            paused = false;
+        }
+
     }
 
 

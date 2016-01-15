@@ -1,5 +1,6 @@
 package com.fevgames.singularityescape.game.cards;
 
+import com.badlogic.gdx.Gdx;
 import com.fevgames.singularityescape.game.GameState;
 
 import java.util.ArrayList;
@@ -10,13 +11,240 @@ import java.util.Random;
  */
 public class ActionsDeck {
     ArrayList<BaseCard> cards;
+    ArrayList<BaseCard> discardedCards;
     GameState gameState;
 
     public void init()
     {
         cards = new ArrayList<BaseCard>();
+        discardedCards = new ArrayList<BaseCard>();
 
-        cards.add(new BaseCard("Open Airlocks") {
+        cards.add(new BaseCard("[SL71b] Burn cargo for fuel", GameState.ShipSections.CARGO) {
+            @Override
+            public void run() {
+
+                if(gameState.cratesNumber==0)
+                {
+                    gameState.showAlert("You have no more crates to use!");
+                    return;
+                }
+                if(gameState.sL71bStatus.health==0||gameState.sL71bStatus.oxygen==0)
+                {
+                    gameState.showAlert("SL71b is dead!");
+                    return;
+                }
+
+                gameState.cratesNumber--;
+                gameState.distance+=120;
+
+                gameState.showAlert("You moved forward 120 units!");
+            }
+        });
+        cards.add(new BaseCard("[SL71b] Burn cargo for fuel", GameState.ShipSections.CARGO) {
+            @Override
+            public void run() {
+
+                if(gameState.cratesNumber==0)
+                {
+                    gameState.showAlert("You have no more crates to use!");
+                    return;
+                }
+                if(gameState.sL71bStatus.health==0||gameState.sL71bStatus.oxygen==0)
+                {
+                    gameState.showAlert("SL71b is dead!");
+                    return;
+                }
+
+                gameState.cratesNumber--;
+                gameState.distance+=120;
+
+                gameState.showAlert("You moved forward 120 units!");
+            }
+        });
+
+        cards.add(new BaseCard("[SL71b] Affinity to fusion core", GameState.ShipSections.CARGO) {
+            @Override
+            public void run() {
+
+                if(gameState.sL71bStatus.health==0||gameState.sL71bStatus.oxygen==0)
+                {
+                    gameState.showAlert("SL71b is dead!");
+                    return;
+                }
+                gameState.sL71bStatus.shipSection=GameState.ShipSections.ENGINEERING;
+                gameState.showAlert("SL71b moved to Engineering. You gain +0.25 speed while SL71b is there.");
+            }
+        });
+
+        cards.add(new BaseCard("[SL71b] Afterburners", GameState.ShipSections.CARGO) {
+            @Override
+            public void run() {
+
+                if(gameState.sL71bStatus.health==0||gameState.sL71bStatus.oxygen==0)
+                {
+                    gameState.showAlert("SL71b is dead!");
+                    return;
+                }
+                gameState.distance+=100;
+                gameState.sL71bStatus.shipSection=GameState.ShipSections.ENGINEERING;
+                gameState.showAlert("SL71b activated afterburners and you gain 100 units of distance from the event horizon.");
+            }
+        });
+        cards.add(new BaseCard("[SL71b] Afterburners", GameState.ShipSections.CARGO) {
+            @Override
+            public void run() {
+
+                if(gameState.sL71bStatus.health==0||gameState.sL71bStatus.oxygen==0)
+                {
+                    gameState.showAlert("SL71b is dead!");
+                    return;
+                }
+                gameState.distance+=100;
+                gameState.sL71bStatus.shipSection=GameState.ShipSections.ENGINEERING;
+                gameState.showAlert("SL71b activated afterburners and you gained 100 units of distance from the event horizon.");
+            }
+        });
+
+        cards.add(new BaseCard("[Cindy] Convert ships food reserves for fuel boost", GameState.ShipSections.LIVING) {
+            @Override
+            public void run() {
+
+                if(gameState.cindyStatus.health==0||gameState.cindyStatus.oxygen==0)
+                {
+                    gameState.showAlert("Cindy is dead!");
+                    return;
+                }
+                gameState.distance+=70;
+                gameState.cindyStatus.shipSection=GameState.ShipSections.LIVING;
+                gameState.showAlert("Cindy moved to LIVING and you gained 100 units of distance from the event horizon burning food reserves.");
+            }
+        });
+        cards.add(new BaseCard("[Cindy] Convert ships food reserves for fuel boost", GameState.ShipSections.LIVING) {
+            @Override
+            public void run() {
+
+                if(gameState.cindyStatus.health==0||gameState.cindyStatus.oxygen==0)
+                {
+                    gameState.showAlert("Cindy is dead!");
+                    return;
+                }
+                gameState.distance+=70;
+                gameState.cindyStatus.shipSection=GameState.ShipSections.LIVING;
+                gameState.showAlert("Cindy moved to LIVING and you gained 70 units of distance from the event horizon burning food reserves.");
+            }
+        });
+
+        cards.add(new BaseCard("[Cindy] Tractor beam to nearby moon", GameState.ShipSections.TACTICAL) {
+            @Override
+            public void run() {
+
+                if(gameState.cindyStatus.health==0||gameState.cindyStatus.oxygen==0)
+                {
+                    gameState.showAlert("Cindy is dead!");
+                    return;
+                }
+                gameState.distance+=100;
+                gameState.cindyStatus.shipSection=GameState.ShipSections.TACTICAL;
+                gameState.showAlert("Cindy used the tractor beam and you gained 100 units of distance from the event horizon.");
+            }
+        });
+        cards.add(new BaseCard("[Cindy] Tractor beam to nearby moon", GameState.ShipSections.TACTICAL) {
+            @Override
+            public void run() {
+
+                if(gameState.cindyStatus.health==0||gameState.cindyStatus.oxygen==0)
+                {
+                    gameState.showAlert("Cindy is dead!");
+                    return;
+                }
+                gameState.distance+=100;
+                gameState.cindyStatus.shipSection=GameState.ShipSections.TACTICAL;
+                gameState.showAlert("Cindy used the tractor beam and you gained 100 units of distance from the event horizon.");
+            }
+        });
+
+        cards.add(new BaseCard("[Cindy] Minimal life support", GameState.ShipSections.TACTICAL) {
+            @Override
+            public void run() {
+
+                if(gameState.cindyStatus.health==0||gameState.cindyStatus.oxygen==0)
+                {
+                    gameState.showAlert("Cindy is dead!");
+                    return;
+                }
+                gameState.oxygenRegenerationRatio=0.5f;
+                gameState.velocity+=1;
+                gameState.cindyStatus.shipSection=GameState.ShipSections.TACTICAL;
+                gameState.showAlert("Cindy redirected some life support systems to the main engine and you gain +1 to speed.");
+            }
+        });
+
+        cards.add(new BaseCard("Eject Navigation Pod", GameState.ShipSections.NAVIGATION) {
+            @Override
+            public void run() {
+                gameState.distance+=180;
+                gameState.texStatus.shipSection=GameState.ShipSections.NAVIGATION;
+                gameState.velocity=0;
+                gameState.disableActionWheel=true;
+                gameState.showAlert("You ejected navigation pod.");
+            }
+        });
+
+        cards.add(new BaseCard("Sacrifice SL71b into fusion core", GameState.ShipSections.ENGINEERING) {
+            @Override
+            public void run() {
+
+                if(gameState.sL71bStatus.health==0||gameState.sL71bStatus.oxygen==0)
+                {
+                    gameState.showAlert("SL71b is dead!");
+                    return;
+                }
+                gameState.distance+=300;
+                //gameState.sL71bStatus.shipSection=GameState.ShipSections.ENGINEERING;
+                gameState.sL71bStatus.oxygen=gameState.sL71bStatus.health=0;
+                gameState.showAlert("You sacrificed SL71b and you gained 300 units of distance from the event horizon.");
+            }
+        });
+
+        cards.add(new BaseCard("Trade Cindy to nearby pirates for assistance (tractor beam)", GameState.ShipSections.NAVIGATION) {
+            @Override
+            public void run() {
+
+                if(gameState.cindyStatus.health==0||gameState.cindyStatus.oxygen==0)
+                {
+                    gameState.showAlert("Cindy is dead!");
+                    return;
+                }
+                gameState.distance+=240;
+                //gameState.sL71bStatus.shipSection=GameState.ShipSections.NAVIGATION;
+                gameState.cindyStatus.oxygen=gameState.cindyStatus.health=0;
+                gameState.showAlert("You sacrificed Cindy to the pirates and you gained 240 units of distance from the event horizon.");
+            }
+        });
+
+        cards.add(new BaseCard("Engage overheated FTL drive (warning: ship could explode!)", GameState.ShipSections.NAVIGATION) {
+            @Override
+            public void run() {
+
+                if(Math.random() < 0.5)
+                {
+                    gameState.distance+=600;
+                }
+                else
+                {
+                    gameState.texStatus.health=0;
+                }
+                //gameState.sL71bStatus.shipSection=GameState.ShipSections.NAVIGATION;
+                //gameState.cindyStatus.oxygen=gameState.cindyStatus.health=0;
+                //gameState.showAlert("You sacrificed Cindy to the pirates and you gained 240 units of distance from the event horizon.");
+            }
+        });
+
+
+
+
+
+        /*cards.add(new BaseCard("Open Airlocks") {
             @Override
             public void run() {
                 gameState.velocity+=2;
@@ -42,11 +270,18 @@ public class ActionsDeck {
             public void run() {
                 gameState.distance+=100;
             }
-        });
+        });*/
     }
 
     public BaseCard getRandom()
     {
+        /*if(cards.size()==0&&discardedCards.size()>0)
+        {
+            cards = discardedCards;
+            discardedCards = new ArrayList<BaseCard>();
+            Gdx.app.log("SE","ActionsDeck reshuffled");
+        }*/
+
         if(cards.size()==0)
             return null;
 
@@ -56,6 +291,7 @@ public class ActionsDeck {
 
         BaseCard tmp=cards.get(index);
         cards.remove(index);
+        discardedCards.add(tmp);
         return tmp;
     }
 

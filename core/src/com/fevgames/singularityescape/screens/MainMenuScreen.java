@@ -1,11 +1,13 @@
 package com.fevgames.singularityescape.screens;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.fevgames.singularityescape.menu.MenuItem;
 
 /**
@@ -30,17 +32,26 @@ public class MainMenuScreen implements Screen,InputProcessor {
     float vortexW,vortexH,vortexAngle;
 
     //MenuItem menuItemEasy,menuItemMedium,menuItemHard;
-    MenuItem menuItemNewGame,menuItemLoadGame,menuItemAboutUs;
+    MenuItem menuItemNewGame,menuCredits;
+    MenuItem menuEasy,menuMedium,menuHard;
+
+    int screenID;
 
     int currentItem;
+    int currentItem2;
     float elapsedTime;
+
+    Music music;
 
     public MainMenuScreen(Game _game)
     {
         this.game=_game;
 
+        screenID=0;
+
         elapsedTime=0;
         currentItem=0;
+        currentItem2=0;
         bgGoingDown=true;
         bgOffset=0;
 
@@ -62,20 +73,26 @@ public class MainMenuScreen implements Screen,InputProcessor {
         menuItemMedium=new MenuItem("menu_medium.png");
         menuItemHard=new MenuItem("menu_hard.png");*/
         menuItemNewGame=new MenuItem("menu/NewGame_Regular.png");
-        menuItemLoadGame=new MenuItem("menu/LoadGame_Regular.png");
-        menuItemAboutUs=new MenuItem("menu/AboutUs_Regular.png");
+        menuCredits=new MenuItem("menu/credits_Regular.png");
+        menuEasy=new MenuItem("menu/easy_Regular.png");
+        menuMedium=new MenuItem("menu/medium_Regular.png");
+        menuHard=new MenuItem("menu/hard_Regular.png");
 
         menuItemNewGame.setHeight(0.1f);
-        menuItemLoadGame.setHeight(0.1f);
-        menuItemAboutUs.setHeight(0.1f);
+        menuCredits.setHeight(0.1f);
+        menuEasy.setHeight(0.1f);
+        menuMedium.setHeight(0.1f);
+        menuHard.setHeight(0.1f);
 
-        menuItemNewGame.setPos(-0.4f,-0.30f);
-        menuItemLoadGame.setPos(-0f,-0.30f);
-        menuItemAboutUs.setPos(0.4f,-0.30f);
+        menuItemNewGame.setPos(-0.2f,-0.30f);
+        menuCredits.setPos(0.2f,-0.30f);
+        menuEasy.setPos(-0.4f,-0.30f);
+        menuMedium.setPos(-0f,-0.30f);
+        menuHard.setPos(0.4f,-0.30f);
+
 
         menuItemNewGame.setOpacity(0);
-        menuItemLoadGame.setOpacity(0);
-        menuItemAboutUs.setOpacity(0);
+        menuCredits.setOpacity(0);
 
         /*menuItemEasy.setHeight(0.08f);
         menuItemMedium.setHeight(0.08f);
@@ -90,6 +107,7 @@ public class MainMenuScreen implements Screen,InputProcessor {
         menuItemHard.setOpacity(0);*/
 
         menuItemNewGame.setSelected(true);
+        menuEasy.setSelected(true);
 
         Gdx.app.log("SE","logoW:"+logoW);
 
@@ -100,6 +118,10 @@ public class MainMenuScreen implements Screen,InputProcessor {
         camera = new OrthographicCamera(4,4*( h / w));*/
 
         batch = new SpriteBatch();
+
+        music = Gdx.audio.newMusic(Gdx.files.internal("audio/menu.mp3"));
+        music.setLooping(true);
+        music.play();
     }
 
     @Override
@@ -114,17 +136,13 @@ public class MainMenuScreen implements Screen,InputProcessor {
         * World height is 1
         * */
 
-        if(elapsedTime>=3&&elapsedTime<=4)
+        if(elapsedTime>=1&&elapsedTime<=2)
         {
-            menuItemNewGame.setOpacity(elapsedTime-3);
+            menuItemNewGame.setOpacity(elapsedTime-1);
         }
-        if(elapsedTime>=4&&elapsedTime<=5)
+        if(elapsedTime>=2&&elapsedTime<=3)
         {
-            menuItemLoadGame.setOpacity(elapsedTime-4);
-        }
-        if(elapsedTime>=5&&elapsedTime<=6)
-        {
-            menuItemAboutUs.setOpacity(elapsedTime-5);
+            menuCredits.setOpacity(elapsedTime-2);
         }
 
         elapsedTime+=delta;
@@ -174,11 +192,19 @@ public class MainMenuScreen implements Screen,InputProcessor {
 
 
 
+        if(screenID==0)
+        {
+            menuItemNewGame.draw(batch);
+            menuCredits.draw(batch);
+        }
+        else if(screenID==1)
+        {
+            menuEasy.draw(batch);
+            menuMedium.draw(batch);
+            menuHard.draw(batch);
+        }
 
 
-        menuItemNewGame.draw(batch);
-        menuItemLoadGame.draw(batch);
-        menuItemAboutUs.draw(batch);
 
 
 
@@ -218,6 +244,10 @@ public class MainMenuScreen implements Screen,InputProcessor {
 
     @Override
     public void dispose() {
+
+        music.stop();
+        music.dispose();
+
         logo.dispose();
     }
 
@@ -231,30 +261,54 @@ public class MainMenuScreen implements Screen,InputProcessor {
 
         if(keycode==Input.Keys.RIGHT)
         {
-            currentItem++;
+            if(screenID==0)
+                currentItem++;
+            if(screenID==1)
+                currentItem2++;
         }
         if(keycode==Input.Keys.LEFT)
         {
-            currentItem--;
+            if(screenID==0)
+                currentItem--;
+            if(screenID==1)
+                currentItem2--;
         }
-        if(currentItem<0)
-            currentItem=0;
-        if(currentItem>2)
-            currentItem=2;
 
-        menuItemNewGame.setSelected(false);
-        menuItemLoadGame.setSelected(false);
-        menuItemAboutUs.setSelected(false);
-        if(currentItem==0)
-            menuItemNewGame.setSelected(true);
-        if(currentItem==1)
-            menuItemLoadGame.setSelected(true);
-        if(currentItem==2)
-            menuItemAboutUs.setSelected(true);
+        this.updateItems();
 
-        if(keycode==Input.Keys.ENTER)
+        if((keycode==Input.Keys.ESCAPE||keycode==Input.Keys.BACKSPACE)&&screenID==1)
         {
-            game.setScreen(new GameScreen(game));
+            screenID=0;
+            return true;
+        }
+
+        if(keycode==Input.Keys.ENTER&&currentItem==0&&screenID==0)
+        {
+            screenID=1;
+            return true;
+        }
+        if(keycode==Input.Keys.ENTER&&screenID==1&&currentItem2==0)
+        {
+            this.dispose();
+            game.setScreen(new GameScreen(game,0));
+            return true;
+        }
+        if(keycode==Input.Keys.ENTER&&screenID==1&&currentItem2==1)
+        {
+            this.dispose();
+            game.setScreen(new GameScreen(game,1));
+            return true;
+        }
+        if(keycode==Input.Keys.ENTER&&screenID==1&&currentItem2==2)
+        {
+            this.dispose();
+            game.setScreen(new GameScreen(game,2));
+            return true;
+        }
+
+        if(keycode==Input.Keys.ENTER&&currentItem==1)
+        {
+            //game.setScreen(new GameScreen(game));
         }
 
 
@@ -274,7 +328,44 @@ public class MainMenuScreen implements Screen,InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
-        game.setScreen(new GameScreen(game));
+        Vector3 touchPoint=new Vector3(screenX,screenY,0);
+        camera.unproject(touchPoint);
+
+        if(screenID==0)
+        {
+            if(menuItemNewGame.checkClick(touchPoint.x,touchPoint.y))
+            {
+                screenID=1;
+                currentItem=0;
+            }
+            if(menuCredits.checkClick(touchPoint.x,touchPoint.y))
+            {
+                /*screenID=1;
+                currentItem=0;*/
+            }
+        }
+        else if(screenID==1)
+        {
+            if(menuEasy.checkClick(touchPoint.x,touchPoint.y))
+            {
+                this.dispose();
+                game.setScreen(new GameScreen(game,0));
+            }
+            if(menuMedium.checkClick(touchPoint.x,touchPoint.y))
+            {
+                this.dispose();
+                game.setScreen(new GameScreen(game,1));
+            }
+            if(menuHard.checkClick(touchPoint.x,touchPoint.y))
+            {
+                this.dispose();
+                game.setScreen(new GameScreen(game,2));
+            }
+        }
+
+        this.updateItems();
+
+        //game.setScreen(new GameScreen(game));
         return true;
     }
 
@@ -291,5 +382,36 @@ public class MainMenuScreen implements Screen,InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+
+    private void updateItems()
+    {
+        if(currentItem<0)
+            currentItem=0;
+        if(currentItem2<0)
+            currentItem2=0;
+        if(currentItem>1)
+            currentItem=1;
+        if(currentItem2>2)
+            currentItem2=2;
+
+        menuItemNewGame.setSelected(false);
+        menuCredits.setSelected(false);
+        menuEasy.setSelected(false);
+        menuMedium.setSelected(false);
+        menuHard.setSelected(false);
+
+        if(currentItem==0)
+            menuItemNewGame.setSelected(true);
+        if(currentItem==1)
+            menuCredits.setSelected(true);
+
+        if(currentItem2==0)
+            menuEasy.setSelected(true);
+        if(currentItem2==1)
+            menuMedium.setSelected(true);
+        if(currentItem2==2)
+            menuHard.setSelected(true);
     }
 }

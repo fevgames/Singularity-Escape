@@ -64,6 +64,11 @@ public class MenuItem {
         batch.setColor(1,1,1,1);
     }
 
+    public boolean checkClick(float _x,float _y)
+    {
+        return (_x>=(-(width/2)+x)&&_y>=(-(height/2)+y)&&_x<=((-(width/2)+x)+width)&&_y<=((-(height/2)+y)+height));
+    }
+
     public void dispose()
     {
         texture.dispose();

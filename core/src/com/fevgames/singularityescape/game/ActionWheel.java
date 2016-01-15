@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.compression.lzma.Base;
 import com.fevgames.singularityescape.common.GraphicUtils;
+import com.fevgames.singularityescape.common.SoundUtils;
 import com.fevgames.singularityescape.game.cards.BaseCard;
 import com.fevgames.singularityescape.screens.GameScreen;
 import com.badlogic.gdx.math.Rectangle;
@@ -90,10 +91,10 @@ public class ActionWheel implements InputProcessor {
                 textTextures[i]=new Texture(GraphicUtils.getPixmapRoundedRectangle((int)layout.width+40,(int)layout.height+24,14, 0xFFFFFFFF));
             }
 
-            batch.setColor(Color.RED);
+            batch.setColor(Color.GRAY);
             for(int k=0;k<tmp.size();k++)
             {
-                if(tmp.get(k).shipSection==sections[i]||tmp.get(k).shipSection==GameState.ShipSections.ALL)
+                if((tmp.get(k).shipSection==sections[i]||tmp.get(k).shipSection==GameState.ShipSections.ALL)&&!tmp.get(k).description.substring(0,5).equals("Go to"))
                 {
                     batch.setColor(Color.BLUE);
                     break;
@@ -166,8 +167,11 @@ public class ActionWheel implements InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
-        if(!visible)
+        if(!visible||gameState.disableActionWheel==true)
+        {
+            visible=false;
             return false;
+        }
 
         Vector3 tmp=new Vector3(screenX,screenY,0);
         camera.unproject(tmp);
@@ -197,6 +201,8 @@ public class ActionWheel implements InputProcessor {
                 actionMenu.visible=true;
                 this.visible=false;
 
+                SoundUtils.click.play();
+
                 return true;
             }
 
@@ -204,6 +210,7 @@ public class ActionWheel implements InputProcessor {
 
         if(!(tmp.x>70||tmp.x<-70||tmp.y>70||tmp.y<-70))
         {
+            SoundUtils.cancel.play();
             Gdx.app.log("SE","Click on Exit");
             visible=false;
             return true;

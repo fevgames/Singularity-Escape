@@ -58,7 +58,7 @@ public class MainUI implements InputProcessor {
                 0+(Gdx.graphics.getHeight()/2)-bgTexture.getHeight()
         );*/
 
-        String txt="Distance: "+(int)gameState.distance+" - Integrity: "+((int)gameState.integrity)+"% - Time: "+((int)gameState.gameTime)+" - New card in: "+(((int)(120-gameState.gameTimeSinceLastCard)));
+        String txt="Distance: "+(int)gameState.distance+" - Integrity: "+((int)gameState.integrity)+"% - Time: "+((int)gameState.gameTime)+" - New card in: "+(((int)(120-gameState.gameTimeSinceLastCard)))+" - Crates: "+gameState.cratesNumber;
 
         layout.setText(font,txt);
         font.draw(

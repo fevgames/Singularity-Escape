@@ -64,7 +64,7 @@ public class ActiveDeck {
         tmpCard.persistent=true;
         cards.add(tmpCard);
 
-        tmpCard=new BaseCard("[DEBUG] Set velocity to -3") {
+        /*tmpCard=new BaseCard("[DEBUG] Set velocity to -3") {
             @Override
             public void run() {
                 gameState.velocity=-3;
@@ -103,7 +103,7 @@ public class ActiveDeck {
             }
         };
         tmpCard.persistent=true;
-        cards.add(tmpCard);
+        cards.add(tmpCard);*/
 
 
     }

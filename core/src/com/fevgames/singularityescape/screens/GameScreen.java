@@ -1,6 +1,8 @@
 package com.fevgames.singularityescape.screens;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,6 +20,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.fevgames.singularityescape.common.GraphicUtils;
+import com.fevgames.singularityescape.common.SoundUtils;
 import com.fevgames.singularityescape.game.ActionMenu;
 import com.fevgames.singularityescape.game.ActionWheel;
 import com.fevgames.singularityescape.game.GameState;
@@ -46,12 +49,18 @@ public class GameScreen implements Screen, InputProcessor {
 
     Texture charTextures[];
 
+    Music music;
 
 
     //Texture tile;
     //float tileW,tileH;
 
     public GameScreen(Game _game)
+    {
+        this(_game,0);
+    }
+
+    public GameScreen(Game _game,int diff)
     {
         this.game=_game;
 
@@ -72,7 +81,7 @@ public class GameScreen implements Screen, InputProcessor {
         inputMultiplexer=new InputMultiplexer();
 
         gameState=new GameState();
-        gameState.init(_game,0);
+        gameState.init(_game,diff);
         actionWheel=new ActionWheel();
         actionWheel.setGameState(gameState);
         actionMenu=new ActionMenu();
@@ -94,6 +103,10 @@ public class GameScreen implements Screen, InputProcessor {
 
         loadedSection=GameState.ShipSections.NAVIGATION;
         this.loadMap(loadedSection);
+
+        music = Gdx.audio.newMusic(Gdx.files.internal("audio/ingame.mp3"));
+        music.setLooping(true);
+        music.play();
 
         Gdx.app.log("SE","GameScreen::GameScreen()");
     }
@@ -159,7 +172,7 @@ public class GameScreen implements Screen, InputProcessor {
 
 
 
-        for(int i=0;i<tiledMap.getLayers().getCount();i++)
+        /*for(int i=0;i<tiledMap.getLayers().getCount();i++)
         {
             MapLayer layer=tiledMap.getLayers().get(i);
             MapObjects objects=layer.getObjects();
@@ -177,14 +190,10 @@ public class GameScreen implements Screen, InputProcessor {
                     Vector3 v= GraphicUtils.translateIsoToScreen(obj.getRectangle().x,obj.getRectangle().y);
 
                     batch.draw(charTextures[2], v.x - (charTextures[2].getWidth() / 2), v.y - (charTextures[2].getHeight() / 2));
-                    //Gdx.app.log("SE"," 1 - "+obj.getRectangle().getX());
 
                 }
-
-
-                //Gdx.app.log("SE",obj.getClass().toString());
             }
-        }
+        }*/
 
         batch.end();
 
@@ -241,6 +250,9 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
+        music.stop();
+        music.dispose();
+
 
     }
 
@@ -319,7 +331,11 @@ public class GameScreen implements Screen, InputProcessor {
         }*/
 
         if(actionWheel.visible==false)
+        {
+            SoundUtils.click.play();
             actionWheel.visible=true;
+        }
+
 
         return false;
     }
