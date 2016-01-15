@@ -14,7 +14,7 @@ Game Designer
 
 **Roby65**  
 Lead Developer  
-[@RDomenella](twitter.com/RDomenella)
+[@RDomenella](https://twitter.com/RDomenella)
 
 **Robert Vaughan**  
 Graphic Artist  
