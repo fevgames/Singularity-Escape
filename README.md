@@ -2,8 +2,6 @@
 
 A LibGDX Jam Game
 libgdx.badlogicgames.com
-
-Devlog: http://itch.io/jam/libgdxjam/topic/11998/fev-games-devlog<br>
 Jam page: http://itch.io/jam/libgdxjam
 
 ##The FevGames team
