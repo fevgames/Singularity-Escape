@@ -1,7 +1,7 @@
 # Singularity Escape
 
 A LibGDX Jam Game
-libgdx.badlogicgames.com
+libgdx.badlogicgames.com  
 Jam page: http://itch.io/jam/libgdxjam
 
 ##The FevGames team
