@@ -342,6 +342,7 @@ public class MainMenuScreen implements Screen,InputProcessor {
             }
             if(menuCredits.checkClick(touchPoint.x,touchPoint.y))
             {
+                Gdx.net.openURI("https://github.com/fevgames/Singularity-Escape/blob/master/README.md");
                 /*screenID=1;
                 currentItem=0;*/
             }
