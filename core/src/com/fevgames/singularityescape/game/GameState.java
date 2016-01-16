@@ -170,13 +170,13 @@ public class GameState {
 
             if(this.leakingAir)
             {
-                this.texStatus.oxygen-=(2*Gdx.graphics.getDeltaTime());
+                this.texStatus.oxygen-=(2f*Gdx.graphics.getDeltaTime());
                 if(this.texStatus.oxygen<=0)
                     this.texStatus.health=0;
-                this.sL71bStatus.oxygen-=(2*Gdx.graphics.getDeltaTime());
+                this.sL71bStatus.oxygen-=(2f*Gdx.graphics.getDeltaTime());
                 if(this.sL71bStatus.oxygen<=0)
                     this.sL71bStatus.health=0;
-                this.cindyStatus.oxygen-=(2*Gdx.graphics.getDeltaTime());
+                this.cindyStatus.oxygen-=(2f*Gdx.graphics.getDeltaTime());
                 if(this.cindyStatus.oxygen<=0)
                     this.cindyStatus.health=0;
             }
@@ -195,9 +195,9 @@ public class GameState {
 
             if(this.poisonGas)
             {
-                this.texStatus.health-=(2*Gdx.graphics.getDeltaTime());
-                this.sL71bStatus.health-=(2*Gdx.graphics.getDeltaTime());
-                this.cindyStatus.health-=(2*Gdx.graphics.getDeltaTime());
+                this.texStatus.health-=(2f*Gdx.graphics.getDeltaTime());
+                this.sL71bStatus.health-=(2f*Gdx.graphics.getDeltaTime());
+                this.cindyStatus.health-=(2f*Gdx.graphics.getDeltaTime());
             }
 
             //this.gameTimeSinceLastMovement+= Gdx.graphics.getDeltaTime();

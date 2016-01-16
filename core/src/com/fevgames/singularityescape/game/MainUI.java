@@ -74,9 +74,9 @@ public class MainUI implements InputProcessor {
         );
 
 
-        txt="[Tex] HP:"+gameState.texStatus.health+"% O2:"+gameState.texStatus.health+"%";
-        txt+=" - [Cindy] HP:"+gameState.cindyStatus.health+"% O2:"+gameState.cindyStatus.health+"%";
-        txt+=" - [SL71b] HP:"+gameState.sL71bStatus.health+"% O2:"+gameState.sL71bStatus.health+"%";
+        txt="[Tex] HP:"+(int)(gameState.texStatus.health)+"% O2:"+(int)(gameState.texStatus.oxygen)+"%";
+        txt+=" - [Cindy] HP:"+(int)(gameState.cindyStatus.health)+"% O2:"+(int)(gameState.cindyStatus.oxygen)+"%";
+        txt+=" - [SL71b] HP:"+(int)(gameState.sL71bStatus.health)+"% O2:"+(int)(gameState.sL71bStatus.oxygen)+"%";
 
         layout.setText(font,txt);
         font.draw(

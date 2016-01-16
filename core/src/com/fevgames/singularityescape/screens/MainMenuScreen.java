@@ -145,6 +145,12 @@ public class MainMenuScreen implements Screen,InputProcessor {
             menuCredits.setOpacity(elapsedTime-2);
         }
 
+        if(elapsedTime>3)
+        {
+            menuItemNewGame.setOpacity(1);
+            menuCredits.setOpacity(1);
+        }
+
         elapsedTime+=delta;
         vortexAngle+=delta*10;
 
