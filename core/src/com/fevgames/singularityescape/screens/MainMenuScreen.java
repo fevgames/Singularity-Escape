@@ -308,6 +308,8 @@ public class MainMenuScreen implements Screen,InputProcessor {
 
         if(keycode==Input.Keys.ENTER&&currentItem==1)
         {
+            Gdx.net.openURI("https://github.com/fevgames/Singularity-Escape/blob/master/README.md");
+            return true;
             //game.setScreen(new GameScreen(game));
         }
 

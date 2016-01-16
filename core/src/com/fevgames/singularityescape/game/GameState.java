@@ -73,7 +73,7 @@ public class GameState {
     {
         this.game=_g;
         this.velocity=4;
-        this.gravity=5;
+        this.gravity=7;
         this.currentShipSection=ShipSections.NAVIGATION;
         this.cratesNumber=6;
         this.oxygenRegenerationRatio=1;
@@ -120,10 +120,10 @@ public class GameState {
         activeDeck.setGameState(this);
 
 
-        //Draw 3 cards
-        for(int i=0;i<3;i++)
+        //Draw 2 cards
+        for(int i=0;i<2;i++)
         {
-            BaseCard tmp=actionsDeck.getRandom();
+            BaseCard tmp=actionsDeck.getRandomFirstDraw();
             if(tmp!=null)
             {
                 activeDeck.addCard(tmp);
@@ -202,7 +202,7 @@ public class GameState {
 
             //this.gameTimeSinceLastMovement+= Gdx.graphics.getDeltaTime();
 
-            if(this.gameTimeSinceLastCard>=120)
+            if(this.gameTimeSinceLastCard>=30)
             {
                 this.gameTimeSinceLastCard=0;
 
@@ -268,11 +268,11 @@ public class GameState {
         this.discardedAlerts++;
         if(this.discardedAlerts==1)
         {
-            this.alertMessage = "Singularity detected.\r\nCollision with event horizon in "+((int)(this.distance/60))+" minutes and "+((int)(this.distance-(((int)(this.distance/60))*60)))+" seconds.";
+            this.alertMessage = "Singularity detected.\r\nCollision with event horizon in "+((int)(this.distance/(60*(gravity-velocity))))+" minutes and "+((int)(this.distance-(((int)(this.distance/(60*(gravity-velocity))))*(60*(gravity-velocity)))))+" seconds.";
         }
         else if(this.discardedAlerts==2)
         {
-            this.alertMessage = "Try to survive. Good luck.";
+            this.alertMessage = "You have one goal, escape from the gravity well of the black hole before you hit the event horizon (and die). Tap anywhere in a room to bring up the ACTION WHEEL. Blue indicates available actions involving that particular room. Tap on the room name to see the ACTION LIST, and tap actions from the list to execute them. Gray means no actions available (other than changing view to that room). Good luck!";
         }
         else {
             this.alertMessage = "";

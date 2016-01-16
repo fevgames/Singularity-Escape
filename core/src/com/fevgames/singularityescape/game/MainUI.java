@@ -26,13 +26,18 @@ public class MainUI implements InputProcessor {
     public MainUI()
     {
         batch = new SpriteBatch();
-        font = new BitmapFont();
+        if(Gdx.graphics.getHeight()<=480)
+            font = new BitmapFont(Gdx.files.internal("fonts/opensans_15.fnt"));
+        else if(Gdx.graphics.getHeight()>=1080)
+            font = new BitmapFont(Gdx.files.internal("fonts/opensans_40.fnt"));
+        else if(Gdx.graphics.getHeight()>=720)
+            font = new BitmapFont(Gdx.files.internal("fonts/opensans_24.fnt"));
         layout=new GlyphLayout();
         visible=true;
 
         font.setColor(Color.WHITE);
 
-        font.getData().setScale(Gdx.graphics.getHeight()/480,Gdx.graphics.getHeight()/480);
+        //font.getData().setScale(Gdx.graphics.getHeight()/1080f,Gdx.graphics.getHeight()/1080f);
 
         //layout.setText(font,"Cancel");
     }
@@ -58,7 +63,7 @@ public class MainUI implements InputProcessor {
                 0+(Gdx.graphics.getHeight()/2)-bgTexture.getHeight()
         );*/
 
-        String txt="Distance: "+(int)gameState.distance+" - Integrity: "+((int)gameState.integrity)+"% - Time: "+((int)gameState.gameTime)+" - New card in: "+(((int)(120-gameState.gameTimeSinceLastCard)))+" - Crates: "+gameState.cratesNumber;
+        String txt="Distance: "+(int)gameState.distance+"/600 - Integrity: "+((int)gameState.integrity)+"% - Time: "+((int)gameState.gameTime)+" - New card in: "+(((int)(30-gameState.gameTimeSinceLastCard)))+" - Crates: "+gameState.cratesNumber;
 
         layout.setText(font,txt);
         font.draw(
@@ -66,6 +71,19 @@ public class MainUI implements InputProcessor {
                 txt,
                 0-(bgTexture.getWidth()/2)+10,
                 +0+(Gdx.graphics.getHeight()/2)-bgTexture.getHeight()/2+8
+        );
+
+
+        txt="[Tex] HP:"+gameState.texStatus.health+"% O2:"+gameState.texStatus.health+"%";
+        txt+=" - [Cindy] HP:"+gameState.cindyStatus.health+"% O2:"+gameState.cindyStatus.health+"%";
+        txt+=" - [SL71b] HP:"+gameState.sL71bStatus.health+"% O2:"+gameState.sL71bStatus.health+"%";
+
+        layout.setText(font,txt);
+        font.draw(
+                batch,
+                txt,
+                0-(bgTexture.getWidth()/2)+10,
+                +0-(Gdx.graphics.getHeight()/2)+bgTexture.getHeight()/2+8
         );
 
         /*for(int i=0;i<textLines.length;i++)

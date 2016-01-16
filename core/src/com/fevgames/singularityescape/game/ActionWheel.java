@@ -39,7 +39,14 @@ public class ActionWheel implements InputProcessor {
     public ActionWheel()
     {
         batch = new SpriteBatch();
-        font = new BitmapFont();
+
+        if(Gdx.graphics.getHeight()<=480)
+            font = new BitmapFont(Gdx.files.internal("fonts/opensans_15.fnt"));
+        else if(Gdx.graphics.getHeight()>=1080)
+            font = new BitmapFont(Gdx.files.internal("fonts/opensans_40.fnt"));
+        else if(Gdx.graphics.getHeight()>=720)
+            font = new BitmapFont(Gdx.files.internal("fonts/opensans_24.fnt"));
+
         layout=new GlyphLayout();
         visible=false;
         textTextures=new Texture[7];
@@ -63,7 +70,7 @@ public class ActionWheel implements InputProcessor {
         if(!visible)
             return;
 
-        font.getData().setScale(Gdx.graphics.getHeight()/480,Gdx.graphics.getHeight()/480);
+        //font.getData().setScale(Gdx.graphics.getHeight()/480,Gdx.graphics.getHeight()/480);
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -167,7 +174,13 @@ public class ActionWheel implements InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
-        if(!visible||gameState.disableActionWheel==true)
+        if(gameState.disableActionWheel==true)
+        {
+            visible=false;
+            return true;
+        }
+
+        if(!visible)
         {
             visible=false;
             return false;

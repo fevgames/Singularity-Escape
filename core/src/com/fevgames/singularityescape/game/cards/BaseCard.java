@@ -10,6 +10,7 @@ public abstract class BaseCard {
     public String description;
     public GameState.ShipSections shipSection;
     public GameState.ShipCharacters character;
+    public boolean firstDraw;
 
     public boolean persistent;
 
@@ -20,6 +21,7 @@ public abstract class BaseCard {
         this.character=GameState.ShipCharacters.ALL;
 
         persistent=false;
+        firstDraw=true;
     }
     public BaseCard(String _d,GameState.ShipSections _s)
     {
@@ -28,6 +30,7 @@ public abstract class BaseCard {
         this.character=GameState.ShipCharacters.ALL;
 
         persistent=false;
+        firstDraw=true;
     }
     public BaseCard(String _d,GameState.ShipSections _s, GameState.ShipCharacters _c)
     {
@@ -36,8 +39,15 @@ public abstract class BaseCard {
         this.character=_c;
 
         persistent=false;
+        firstDraw=true;
     }
 
     public abstract void run();
+
+    public BaseCard noFirstDraw()
+    {
+        this.firstDraw=false;
+        return this;
+    }
 
 }

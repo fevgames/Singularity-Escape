@@ -38,7 +38,12 @@ public class ActionMenu implements InputProcessor {
     public ActionMenu()
     {
         batch = new SpriteBatch();
-        font = new BitmapFont();
+        if(Gdx.graphics.getHeight()<=480)
+            font = new BitmapFont(Gdx.files.internal("fonts/opensans_15.fnt"));
+        else if(Gdx.graphics.getHeight()>=1080)
+            font = new BitmapFont(Gdx.files.internal("fonts/opensans_40.fnt"));
+        else if(Gdx.graphics.getHeight()>=720)
+            font = new BitmapFont(Gdx.files.internal("fonts/opensans_24.fnt"));
         layout=new GlyphLayout();
         visible=false;
 
@@ -49,7 +54,7 @@ public class ActionMenu implements InputProcessor {
         textLines[3]=" - Entry #3";*/
 
         font.setColor(Color.BLACK);
-        font.getData().setScale(Gdx.graphics.getHeight()/480,Gdx.graphics.getHeight()/480);
+        //font.getData().setScale(Gdx.graphics.getHeight()/480,Gdx.graphics.getHeight()/480);
 
         this.selectedShipSection=GameState.ShipSections.NONE;
 
