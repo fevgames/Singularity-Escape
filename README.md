@@ -39,11 +39,6 @@ Move Cursor 02
 Alert 02  
 [noiseforfun.com](http://www.noiseforfun.com/)
 
-##Art
-
-Odds and Ends by Stephen Challener (Redshrike)
-[opengameart.org](http://opengameart.org/)
-
 ##Tools
 
 [Tiled](http://www.mapeditor.org/)
