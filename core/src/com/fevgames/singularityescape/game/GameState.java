@@ -73,7 +73,7 @@ public class GameState {
     {
         this.game=_g;
         this.velocity=4;
-        this.gravity=7;
+        this.gravity=6;
         this.currentShipSection=ShipSections.NAVIGATION;
         this.cratesNumber=6;
         this.oxygenRegenerationRatio=1;
