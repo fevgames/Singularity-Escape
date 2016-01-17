@@ -1,9 +1,7 @@
 # Singularity Escape
 
 A LibGDX Jam Game
-libgdx.badlogicgames.com
-
-Devlog: http://itch.io/jam/libgdxjam/topic/11998/fev-games-devlog<br>
+libgdx.badlogicgames.com  
 Jam page: http://itch.io/jam/libgdxjam
 
 ##The FevGames team
@@ -40,6 +38,11 @@ Move Cursor 02
 
 Alert 02  
 [noiseforfun.com](http://www.noiseforfun.com/)
+
+##Art
+
+Odds and Ends by Stephen Challener (Redshrike)
+[opengameart.org](http://opengameart.org/)
 
 ##Tools
 
